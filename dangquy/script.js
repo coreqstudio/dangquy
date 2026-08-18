@@ -1,4 +1,4 @@
-// ===== CẤU HÌNH FIREBASE (compat) =====
+// ===== CẤU HÌNH FIREBASE =====
 const firebaseConfig = {
     apiKey: "AIzaSyAcsjZmPrUDxnaUA1nzCGiE9M-3fUM2rRk",
     authDomain: "blogevents-8977c.firebaseapp.com",
@@ -11,33 +11,27 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// ===== KIỂM TRA AUTH THỰC TẾ =====
-auth.onAuthStateChanged((user) => {
-    if (!user) {
-        // Nếu chưa đăng nhập, chuyển về login
-        window.location.href = '../login.html';
-        return;
-    }
-    // Đã đăng nhập, lưu thông tin vào localStorage nếu cần
-    const userStr = localStorage.getItem('user');
-    if (!userStr || JSON.parse(userStr).uid !== user.uid) {
-        // Cập nhật localStorage với thông tin mới
-        localStorage.setItem('user', JSON.stringify({
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName || user.email.split('@')[0],
-            photoURL: user.photoURL || ''
-        }));
-    }
-    // Hiển thị tên user
-    const currentUser = JSON.parse(localStorage.getItem('user'));
-    const usernameSpan = document.querySelector('.username');
-    if (usernameSpan && currentUser) {
-        usernameSpan.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.displayName || currentUser.email}`;
-    }
-});
+// ===== KIỂM TRA ĐĂNG NHẬP (dùng localStorage) =====
+const userStr = localStorage.getItem('user');
+let currentUser = null;
+if (userStr) {
+    try {
+        currentUser = JSON.parse(userStr);
+    } catch (e) {}
+}
 
-// ===== ĐĂNG XUẤT =====
+// Nếu chưa có user, chuyển về login
+if (!currentUser) {
+    window.location.href = '../login.html';
+}
+
+// Hiển thị tên user trên header
+const usernameSpan = document.querySelector('.username');
+if (usernameSpan && currentUser) {
+    usernameSpan.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.displayName || currentUser.email}`;
+}
+
+// ===== XỬ LÝ ĐĂNG XUẤT (gọi Firebase signOut) =====
 const logoutBtn = document.querySelector('.logout-btn');
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async function(e) {
@@ -419,7 +413,7 @@ searchInput.addEventListener('input', function() {
     performSearch(this.value);
 });
 
-// Khởi chạy
+// ===== KHỞI CHẠY =====
 loadData().then(() => {
     currentData = [...newsData];
     renderNews(currentData, 1);
