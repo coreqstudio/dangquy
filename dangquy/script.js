@@ -1,70 +1,56 @@
-// ===== FIREBASE IMPORTS (logout thực tế và bảo vệ trang) =====
-import { initializeApp } from 'firebase/app';
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
-
-// Cấu hình Firebase (giống login.html)
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// ===== CẤU HÌNH FIREBASE (compat) =====
 const firebaseConfig = {
-  apiKey: "AIzaSyAcsjZmPrUDxnaUA1nzCGiE9M-3fUM2rRk",
-  authDomain: "blogevents-8977c.firebaseapp.com",
-  projectId: "blogevents-8977c",
-  storageBucket: "blogevents-8977c.firebasestorage.app",
-  messagingSenderId: "353511561806",
-  appId: "1:353511561806:web:ffaab4fd78d66b8437c11f"
+    apiKey: "AIzaSyAcsjZmPrUDxnaUA1nzCGiE9M-3fUM2rRk",
+    authDomain: "blogevents-8977c.firebaseapp.com",
+    projectId: "blogevents-8977c",
+    storageBucket: "blogevents-8977c.firebasestorage.app",
+    messagingSenderId: "353511561806",
+    appId: "1:353511561806:web:ffaab4fd78d66b8437c11f"
 };
 
-// Khởi tạo Firebase (dùng compat)
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// ===== KIỂM TRA ĐĂNG NHẬP VÀ LẤY THÔNG TIN USER =====
-const userStr = localStorage.getItem('user');
+// ===== KIỂM TRA ĐĂNG NHẬP =====
 let currentUser = null;
+const userStr = localStorage.getItem('user');
 if (userStr) {
     try {
         currentUser = JSON.parse(userStr);
     } catch (e) {}
 }
 
-// Nếu chưa có user, chuyển về trang login
+// Nếu chưa có user, chuyển về login
 if (!currentUser) {
     window.location.href = '../login.html';
 }
 
-// Hiển thị tên user trên header
+// Hiển thị tên user
 const usernameSpan = document.querySelector('.username');
 if (usernameSpan && currentUser) {
     usernameSpan.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.displayName || currentUser.email}`;
 }
 
-// ===== XỬ LÝ ĐĂNG XUẤT (gọi Firebase signOut) =====
+// ===== ĐĂNG XUẤT (Firebase + xóa localStorage) =====
 const logoutBtn = document.querySelector('.logout-btn');
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async function(e) {
         e.preventDefault();
         try {
-            // Đăng xuất Firebase
             await auth.signOut();
-            // Xóa localStorage
             localStorage.removeItem('user');
-            // Chuyển về trang login
             window.location.href = '../login.html';
         } catch (error) {
             console.error('Logout error:', error);
             alert('Đăng xuất thất bại, vui lòng thử lại.');
         }
     });
+}
 
 // ===== DỮ LIỆU VÀ LƯU TRỮ =====
 let newsData = [];
 const STORAGE_KEY = 'blogPosts';
 
-// Hàm tải dữ liệu từ localStorage hoặc từ file posts.json
 async function loadData() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -72,10 +58,7 @@ async function loadData() {
             newsData = JSON.parse(stored);
             let needSave = false;
             newsData = newsData.map(item => {
-                if (item.views === undefined) {
-                    item.views = 0;
-                    needSave = true;
-                }
+                if (item.views === undefined) { item.views = 0; needSave = true; }
                 return item;
             });
             if (needSave) saveData();
@@ -101,58 +84,6 @@ async function loadData() {
 
 function saveData() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newsData));
-}
-
-// ===== LẤY THÔNG TIN USER TỪ LOCALSTORAGE =====
-const userStr = localStorage.getItem('user');
-let currentUser = null;
-if (userStr) {
-    try {
-        currentUser = JSON.parse(userStr);
-    } catch (e) {}
-}
-
-// ===== BẢO VỆ TRANG: NẾU CHƯA LOGIN -> CHUYỂN VỀ LOGIN =====
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        // Không có user -> chuyển về login
-        window.location.href = '../login.html';
-        return;
-    }
-    // Đã login, cập nhật thông tin nếu cần
-    if (!currentUser) {
-        // Lưu lại thông tin nếu chưa có trong localStorage
-        localStorage.setItem('user', JSON.stringify({
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName || user.email.split('@')[0],
-            photoURL: user.photoURL || ''
-        }));
-        currentUser = { uid: user.uid, email: user.email, displayName: user.displayName || user.email.split('@')[0], photoURL: user.photoURL || '' };
-    }
-    // Hiển thị tên user trên header
-    const usernameSpan = document.querySelector('.username');
-    if (usernameSpan && currentUser) {
-        usernameSpan.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.displayName || currentUser.email}`;
-    }
-});
-
-// ===== XỬ LÝ ĐĂNG XUẤT (Firebase + localStorage) =====
-const logoutBtn = document.querySelector('.logout-btn');
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', async function() {
-        try {
-            // Đăng xuất khỏi Firebase
-            await signOut(auth);
-            // Xóa localStorage
-            localStorage.removeItem('user');
-            // Chuyển về login
-            window.location.href = '../login.html';
-        } catch (error) {
-            console.error('Logout error:', error);
-            alert('Đăng xuất thất bại, vui lòng thử lại.');
-        }
-    });
 }
 
 // ===== BIẾN TOÀN CỤC =====
@@ -238,7 +169,6 @@ function renderNews(data = currentData, page = 1) {
     updatePagination(data, page);
 }
 
-// ===== PHÂN TRANG =====
 function updatePagination(data, currentPage) {
     const totalPages = Math.ceil(data.length / itemsPerPage);
     const paginationEl = document.querySelector('.pagination');
@@ -262,17 +192,13 @@ function updatePagination(data, currentPage) {
     });
 }
 
-// ===== LỌC =====
 function filterByCategory(category) {
-    if (searchInput.value.trim() !== '') {
-        searchInput.value = '';
-    }
+    if (searchInput.value.trim() !== '') searchInput.value = '';
     currentCategory = category;
     refreshCurrentData();
     renderNews(currentData, 1);
 }
 
-// ===== TÌM KIẾM =====
 function performSearch(keyword) {
     const trimmed = keyword.trim().toLowerCase();
     currentCategory = 'all';
@@ -282,7 +208,6 @@ function performSearch(keyword) {
     renderNews(currentData, 1);
 }
 
-// ===== LÀM MỚI CURRENT DATA =====
 function refreshCurrentData() {
     if (currentCategory === 'all') {
         currentData = [...newsData];
@@ -302,11 +227,9 @@ function refreshCurrentData() {
     currentPage = 1;
 }
 
-// ===== MỞ CHI TIẾT (tự động tăng view) =====
 function openDetail(id) {
     const item = currentData.find(n => n.id === id);
     if (!item) return;
-
     item.views = (item.views || 0) + 1;
     const original = newsData.find(n => n.id === id);
     if (original) original.views = item.views;
@@ -321,20 +244,9 @@ function openDetail(id) {
     if (item.video) {
         const isYoutube = item.video.includes('youtube.com/embed') || item.video.includes('youtu.be');
         if (isYoutube) {
-            videoHtml = `
-                <div class="detail-video">
-                    <iframe src="${item.video}" allowfullscreen loading="lazy"></iframe>
-                </div>
-            `;
+            videoHtml = `<div class="detail-video"><iframe src="${item.video}" allowfullscreen loading="lazy"></iframe></div>`;
         } else {
-            videoHtml = `
-                <div class="detail-video">
-                    <video controls>
-                        <source src="${item.video}" type="video/mp4">
-                        Trình duyệt không hỗ trợ video.
-                    </video>
-                </div>
-            `;
+            videoHtml = `<div class="detail-video"><video controls><source src="${item.video}" type="video/mp4">Trình duyệt không hỗ trợ video.</video></div>`;
         }
     }
 
@@ -366,7 +278,6 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeDetail();
 });
 
-// ===== MỞ FORM THÊM MỚI =====
 function openAddForm() {
     editPostId.value = '';
     adminFormTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Thêm bài viết mới';
@@ -378,7 +289,6 @@ function openAddForm() {
     document.body.style.overflow = 'hidden';
 }
 
-// ===== MỞ FORM SỬA =====
 function openEditForm(id) {
     const item = newsData.find(n => n.id === id);
     if (!item) return;
@@ -408,10 +318,8 @@ adminOverlay.addEventListener('click', function(e) {
     if (e.target === this) closeAdmin();
 });
 
-// ===== XỬ LÝ SUBMIT (THÊM / SỬA) =====
 addPostForm.addEventListener('submit', function(e) {
     e.preventDefault();
-
     const id = parseInt(editPostId.value);
     const title = document.getElementById('postTitle').value.trim();
     const category = document.getElementById('postCategory').value;
@@ -432,29 +340,17 @@ addPostForm.addEventListener('submit', function(e) {
         }
     } else {
         const newId = newsData.length ? Math.max(...newsData.map(p => p.id)) + 1 : 1;
-        const newPost = {
-            id: newId,
-            title,
-            category,
-            date,
-            views: 0,
-            image,
-            video,
-            body
-        };
-        newsData.push(newPost);
+        newsData.push({ id: newId, title, category, date, views: 0, image, video, body });
     }
 
     saveData();
     addPostForm.reset();
     document.getElementById('postDate').value = new Date().toISOString().slice(0,10);
     closeAdmin();
-
     refreshCurrentData();
     renderNews(currentData, 1);
 });
 
-// ===== XÓA BÀI VIẾT =====
 deletePostBtn.addEventListener('click', function() {
     const id = parseInt(this.dataset.id);
     if (!id) return;
@@ -466,7 +362,6 @@ deletePostBtn.addEventListener('click', function() {
     renderNews(currentData, 1);
 });
 
-// ===== XUẤT JSON =====
 exportBtn.addEventListener('click', function() {
     const dataStr = JSON.stringify(newsData, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
@@ -478,7 +373,6 @@ exportBtn.addEventListener('click', function() {
     URL.revokeObjectURL(url);
 });
 
-// ===== NHẬP JSON =====
 importBtn.addEventListener('click', function() {
     fileInput.click();
 });
@@ -506,7 +400,6 @@ fileInput.addEventListener('change', function(e) {
     fileInput.value = '';
 });
 
-// ===== SỰ KIỆN FILTER =====
 filterBtns.forEach(btn => {
     btn.addEventListener('click', function() {
         const category = this.dataset.category;
@@ -516,12 +409,11 @@ filterBtns.forEach(btn => {
     });
 });
 
-// ===== TÌM KIẾM =====
 searchInput.addEventListener('input', function() {
     performSearch(this.value);
 });
 
-// ===== KHỞI CHẠY =====
+// Khởi chạy
 loadData().then(() => {
     currentData = [...newsData];
     renderNews(currentData, 1);
