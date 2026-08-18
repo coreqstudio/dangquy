@@ -18,9 +18,47 @@ const firebaseConfig = {
   appId: "1:353511561806:web:ffaab4fd78d66b8437c11f"
 };
 
-// Khởi tạo Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+// Khởi tạo Firebase (dùng compat)
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// ===== KIỂM TRA ĐĂNG NHẬP VÀ LẤY THÔNG TIN USER =====
+const userStr = localStorage.getItem('user');
+let currentUser = null;
+if (userStr) {
+    try {
+        currentUser = JSON.parse(userStr);
+    } catch (e) {}
+}
+
+// Nếu chưa có user, chuyển về trang login
+if (!currentUser) {
+    window.location.href = '../login.html';
+}
+
+// Hiển thị tên user trên header
+const usernameSpan = document.querySelector('.username');
+if (usernameSpan && currentUser) {
+    usernameSpan.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.displayName || currentUser.email}`;
+}
+
+// ===== XỬ LÝ ĐĂNG XUẤT (gọi Firebase signOut) =====
+const logoutBtn = document.querySelector('.logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        try {
+            // Đăng xuất Firebase
+            await auth.signOut();
+            // Xóa localStorage
+            localStorage.removeItem('user');
+            // Chuyển về trang login
+            window.location.href = '../login.html';
+        } catch (error) {
+            console.error('Logout error:', error);
+            alert('Đăng xuất thất bại, vui lòng thử lại.');
+        }
+    });
 
 // ===== DỮ LIỆU VÀ LƯU TRỮ =====
 let newsData = [];
