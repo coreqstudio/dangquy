@@ -6,7 +6,7 @@
     <title>Đăng nhập - NewsBlog</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* (giữ nguyên phần style cũ, không thay đổi) */
+        /* (giữ nguyên phần style cũ) */
         * {
             margin: 0;
             padding: 0;
@@ -207,13 +207,12 @@
         </div>
     </div>
 
-    <!-- Firebase SDK compat (không dùng module) -->
+    <!-- Firebase compat -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // Cấu hình Firebase (dùng config của bạn)
         const firebaseConfig = {
             apiKey: "AIzaSyAcsjZmPrUDxnaUA1nzCGiE9M-3fUM2rRk",
             authDomain: "blogevents-8977c.firebaseapp.com",
@@ -227,9 +226,9 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Đặt persistence = SESSION (không lưu tự động, tắt trình duyệt là mất)
+        // Đặt persistence = SESSION (không lưu tự động)
         auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            .then(() => console.log('Persistence set to SESSION'))
+            .then(() => console.log('Persistence SESSION'))
             .catch(err => console.warn('Persistence error:', err));
 
         // DOM
@@ -250,7 +249,7 @@
             btnText.innerHTML = loading ? '<span class="spinner"></span> Đang đăng nhập...' : 'Đăng nhập';
         }
 
-        // Đăng nhập
+        // Submit form
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             setError('');
@@ -289,6 +288,7 @@
                     photoURL: photoURL
                 }));
 
+                // Chuyển hướng đến blog
                 window.location.href = 'dangquy/index.html';
 
             } catch (error) {
@@ -303,15 +303,7 @@
             }
         });
 
-        // Nếu đã login thì chuyển thẳng vào blog (nhưng do SESSION, khi mới mở lại trang chưa login)
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // Có user -> chuyển đến blog (nếu chưa ở đó)
-                if (window.location.pathname.includes('login.html') || window.location.pathname === '/') {
-                    window.location.href = 'dangquy/index.html';
-                }
-            }
-        });
+        // KHÔNG CÓ onAuthStateChanged AUTO REDIRECT ở đây
     </script>
 </body>
 </html>
