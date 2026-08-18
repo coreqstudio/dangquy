@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "title": "Hướng dẫn Git cơ bản cho người mới",
+    "category": "Git",
+    "date": "2026-08-16",
+    "views": 1246,
+    "image": "https://picsum.photos/seed/git1/234/132",
+    "video": "https://www.youtube.com/embed/3fUbBnN_H2c",
+    "body": "Nội dung chi tiết về Git... bạn có thể viết HTML ở đây."
+  },
+  {
+    "id": 2,
+    "title": "Những câu chuyện ngẫm đời đầy cảm xúc",
+    "category": "Story-Ngẫm",
+    "date": "2026-08-14",
+    "views": 876,
+    "image": "https://picsum.photos/seed/story2/234/132",
+    "video": null,
+    "body": "Đôi khi cuộc sống chỉ cần vậy thôi"
+  },
+  {
+    "id": 3,
+    "title": "Tạo hiệu ứng video với After Effects",
+    "category": "Effects Video",
+    "date": "2026-08-12",
+    "views": 2103,
+    "image": "https://picsum.photos/seed/effects3/234/132",
+    "video": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "body": "Hướng dẫn tạo hiệu ứng chuyên nghiệp..."
+  },
+  {
+    "id": 4,
+    "title": "Playlist nhạc thư giãn cuối tuần",
+    "category": "Home-Decor",
+    "date": "2026-08-10",
+    "views": 568,
+    "image": "https://picsum.photos/seed/music4/234/132",
+    "video": "https://www.youtube.com/embed/jfKfPfyJRdk",
+    "body": "Tuyển tập những bản nhạc nhẹ nhàng..."
+  },
+  {
+    "id": 5,
+    "title": "Trang trí nhà cửa theo phong cách Minimalist",
+    "category": "Home-Decor",
+    "date": "2026-08-08",
+    "views": 1892,
+    "image": "https://picsum.photos/seed/decor5/234/132",
+    "video": null,
+    "body": "Gợi ý sắp xếp đồ đạc để không gian sống thêm thoáng đãng..."
+  },
+  {
+    "id": 6,
+    "title": "Git rebase vs merge – nên dùng khi nào?",
+    "category": "Git",
+    "date": "2026-08-06",
+    "views": 432,
+    "image": "https://picsum.photos/seed/git6/234/132",
+    "video": "https://www.youtube.com/embed/f1wnYdLEpgI",
+    "body": "So sánh chi tiết giữa rebase và merge..."
+  },
+  {
+    "id": 8,
+    "title": "Hiệu ứng chuyển cảnh trong Premiere Pro",
+    "category": "Effects Video",
+    "date": "2026-08-03",
+    "views": 724,
+    "image": "https://picsum.photos/seed/effects8/234/132",
+    "video": "https://www.youtube.com/embed/9bZkp7q19f0",
+    "body": "Mẹo tạo hiệu ứng chuyển cảnh mượt mà..."
+  },
+  {
+    "id": 9,
+    "title": "Lò vi sóng",
+    "category": "Music",
+    "date": "2026-08-18",
+    "views": 7,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv-ayj0jgkLmL7RKnkK_McJMsKoQPoI2OiIxYmnPyzoQ&s",
+    "video": null,
+    "body": "Hi quang hùng \n<br><img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv-ayj0jgkLmL7RKnkK_McJMsKoQPoI2OiIxYmnPyzoQ&s\"><br>\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube-nocookie.com/embed/AIsTFnRjsdg?si=UEdrafyCj8XHui3n\" \nreferrerpolicy=\"strict-origin-when-cross-origin\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>"
+  }
+]

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog News</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Firebase import map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-left">
+            <h1 class="logo">📰 NewsBlog</h1>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <span class="username"><i class="fas fa-user-circle"></i> Nguyễn Văn A</span>
+                <button class="notification-btn"><i class="fas fa-bell"></i></button>
+                <button class="admin-btn" id="adminBtn" title="Viết bài mới"><i class="fas fa-pen-fancy"></i></button>
+                <button class="logout-btn">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main-content" id="mainContent">
+        <!-- Filter + Search + Xuất/Nhập -->
+        <div class="news-filter">
+            <button class="filter-btn active" data-category="all">Tất cả</button>
+            <button class="filter-btn" data-category="git">Git</button>
+            <button class="filter-btn" data-category="story">Story-Ngẫm</button>
+            <button class="filter-btn" data-category="effects">Effects Video</button>
+            <button class="filter-btn" data-category="music">Music</button>
+            <button class="filter-btn" data-category="decor">Home-Decor</button>
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm..." class="search-input" />
+            </div>
+            <div class="data-actions">
+                <button class="export-btn" id="exportBtn"><i class="fas fa-file-export"></i> Xuất</button>
+                <button class="import-btn" id="importBtn"><i class="fas fa-file-import"></i> Nhập</button>
+                <input type="file" id="fileInput" accept=".json" style="display:none">
+            </div>
+        </div>
+
+        <!-- Danh sách tin -->
+        <div class="news-list" id="newsList"></div>
+        <!-- Phân trang -->
+        <div class="pagination"></div>
+    </main>
+
+    <!-- ===== OVERLAY CHI TIẾT ===== -->
+    <div class="news-detail-overlay" id="newsDetailOverlay">
+        <div class="news-detail-container">
+            <button class="close-detail-btn"><i class="fas fa-times"></i></button>
+            <div class="news-detail-content" id="newsDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL THÊM/SỬA BÀI VIẾT ===== -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-container">
+            <button class="close-admin-btn" id="closeAdminBtn"><i class="fas fa-times"></i></button>
+            <h2 id="adminFormTitle"><i class="fas fa-plus-circle"></i> Thêm bài viết mới</h2>
+            <form id="addPostForm">
+                <div class="form-group">
+                    <label>Tiêu đề *</label>
+                    <input type="text" id="postTitle" required placeholder="Nhập tiêu đề..." />
+                </div>
+                <div class="form-group">
+                    <label>Danh mục *</label>
+                    <select id="postCategory" required>
+                        <option value="Git">Git</option>
+                        <option value="Story-Ngẫm">Story-Ngẫm</option>
+                        <option value="Effects Video">Effects Video</option>
+                        <option value="Music">Music</option>
+                        <option value="Home-Decor">Home-Decor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ngày đăng</label>
+                    <input type="date" id="postDate" />
+                </div>
+                <div class="form-group">
+                    <label>Link ảnh thumbnail (234x132)</label>
+                    <input type="url" id="postImage" placeholder="https://example.com/anh.jpg" />
+                </div>
+                <div class="form-group">
+                    <label>Link video (YouTube embed hoặc file .mp4)</label>
+                    <input type="url" id="postVideo" placeholder="https://www.youtube.com/embed/..." />
+                </div>
+                <div class="form-group">
+                    <label>Nội dung *</label>
+                    <textarea id="postBody" required rows="5" placeholder="Viết nội dung bài viết..."></textarea>
+                </div>
+                <input type="hidden" id="editPostId" value="">
+                <div style="display:flex; gap:12px; margin-top:5px;">
+                    <button type="submit" class="submit-btn" style="flex:1;"><i class="fas fa-save"></i> <span id="submitBtnText">Đăng bài</span></button>
+                    <button type="button" class="delete-btn" id="deletePostBtn" style="display:none;"><i class="fas fa-trash"></i> Xóa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
