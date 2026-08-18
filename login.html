@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - NewsBlog</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80') center/cover no-repeat;
+            position: relative;
+        }
+
+        /* Lớp phủ làm mờ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            z-index: 0;
+        }
+
+         /* Khung login */
+        .login-container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 32px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.3s ease;
+        }
+        .login-container:hover {
+            transform: translateY(-4px);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+        .login-header h1 i {
+            color: #6c5ce7;
+            margin-right: 8px;
+        }
+        .login-header p {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .form-group .input-wrapper {
+            position: relative;
+        }
+        .form-group .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.3);
+            font-size: 16px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .form-group input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+        .form-group input:focus {
+            border-color: #6c5ce7;
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 4px rgba(108,92,231,0.15);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #6c5ce7;
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .login-btn:hover {
+            background: #5a4bd1;
+            transform: translateY(-2px);
+        }
+        .login-btn:active {
+            transform: scale(0.97);
+        }
+        .login-btn i {
+            font-size: 18px;
+        }
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255,255,255,0.3);
+            font-size: 13px;
+        }
+        .login-footer a {
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            background: rgba(225, 112, 85, 0.2);
+            border-left: 3px solid #e17055;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            color: #e17055;
+            font-size: 14px;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 32px 24px;
+                margin: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1><i class="fas fa-newspaper"></i> NewsBlog</h1>
+            <p>Đăng nhập để tiếp tục</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
+                <input type="password" id="password" placeholder="••••••••" required />
+            </div>
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span id="btnText">Đăng nhập</span>
+            </button>
+            <div class="error-msg" id="errorMsg"></div>
+        </form>
+
+        <div class="login-footer">
+            Quản trị viên liên hệ hỗ trợ
+        </div>
+    </div>
+
+    <!-- Firebase SDK (v9 modular) -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from 'firebase/app';
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+        import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+
+        // ===== CẤU HÌNH FIREBASE =====
+        // THAY THẾ BẰNG CONFIG CỦA BẠN
+        c// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAcsjZmPrUDxnaUA1nzCGiE9M-3fUM2rRk",
+  authDomain: "blogevents-8977c.firebaseapp.com",
+  projectId: "blogevents-8977c",
+  storageBucket: "blogevents-8977c.firebasestorage.app",
+  messagingSenderId: "353511561806",
+  appId: "1:353511561806:web:ffaab4fd78d66b8437c11f"
+};
+
+// Initialize Firebase
+//const app = initializeApp(firebaseConfig);
+
+        // Khởi tạo Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM elements
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btnText');
+        const errorMsg = document.getElementById('errorMsg');
+
+        // Hàm hiển thị lỗi
+        function setError(msg) {
+            errorMsg.textContent = msg;
+        }
+
+        // Hàm set loading
+        function setLoading(loading) {
+            if (loading) {
+                loginBtn.disabled = true;
+                btnText.innerHTML = '<span class="spinner"></span> Đang đăng nhập...';
+            } else {
+                loginBtn.disabled = false;
+                btnText.textContent = 'Đăng nhập';
+            }
+        }
+
+        // Xử lý đăng nhập
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            setError('');
+            setLoading(true);
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            try {
+                // Đăng nhập với email/password
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Lấy thông tin user từ Firestore (hoặc tạo mới nếu chưa có)
+                const userRef = doc(db, 'users', user.uid);
+                const userSnap = await getDoc(userRef);
+
+                let displayName = user.displayName || email.split('@')[0];
+                let photoURL = user.photoURL || '';
+
+                if (userSnap.exists()) {
+                    const data = userSnap.data();
+                    displayName = data.displayName || displayName;
+                    photoURL = data.photoURL || photoURL;
+                } else {
+                    // Nếu chưa có document, tạo mới với thông tin cơ bản
+                    await setDoc(userRef, {
+                        email: user.email,
+                        displayName: displayName,
+                        photoURL: photoURL,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                // Lưu thông tin user vào localStorage để dùng cho blog
+                localStorage.setItem('user', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: displayName,
+                    photoURL: photoURL
+                }));
+
+                // Chuyển hướng đến trang blog
+                window.location.href = 'dangquy/index.html';
+
+            } catch (error) {
+                console.error('Login error:', error);
+                let msg = 'Đăng nhập thất bại. Vui lòng kiểm tra lại.';
+                if (error.code === 'auth/user-not-found') {
+                    msg = 'Tài khoản không tồn tại.';
+                } else if (error.code === 'auth/wrong-password') {
+                    msg = 'Mật khẩu không đúng.';
+                } else if (error.code === 'auth/invalid-email') {
+                    msg = 'Email không hợp lệ.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    msg = 'Quá nhiều yêu cầu, vui lòng thử lại sau.';
+                }
+                setError(msg);
+                setLoading(false);
+            }
+        });
+
+        // Kiểm tra trạng thái đăng nhập – nếu đã login thì chuyển thẳng vào blog
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Nếu đã đăng nhập, chuyển đến blog
+                window.location.href = 'dangquy/index.html';
+            }
+        });
+    </script>
+</body>
+</html>
