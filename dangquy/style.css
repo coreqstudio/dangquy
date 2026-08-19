@@ -531,3 +531,8 @@ body {
         font-size: 11px;
     }
 }
+small:hover {
+  filter: blur(0px) !important;
+  opacity: 1 !important;
+  transition: 0.3s;
+}
