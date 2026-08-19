@@ -84,9 +84,19 @@
     "title": "[Thiết Kế] Cải tạo nhà cấp 4",
     "category": "Home-Decor",
     "date": "2026-08-19",
-    "views": 18,
+    "views": 19,
     "image": "https://lh3.googleusercontent.com/d/1ahMdpljSqeEH0WjgzwfXG9B9K2lz9LmW",
     "video": null,
     "body": "Nguồn: Milimet2 <br>\n<style>\n  .video-container {\n    width: 100%;\n    max-width: 400px;          /* Chiều rộng tối đa bạn muốn */\n    aspect-ratio: 9 / 16;      /* Tỉ lệ dọc */\n    background: #000;\n    margin: 0 auto;            /* Căn giữa nếu cần */\n  }\n  .video-container iframe {\n    width: 100%;\n    height: 100%;\n    border: 0;\n  }\n</style>\n\n<div class=\"video-container\">\n  <iframe src=\"https://drive.google.com/file/d/1GYb_NjGgOdeUOm9NMx5ChAN4OISEBHQz/preview\" allowfullscreen></iframe>\n</div>"
+  },
+  {
+    "id": 11,
+    "title": "Thương Thảo Chuyện Trăm Năm",
+    "category": "Music",
+    "date": "2026-08-19",
+    "views": 11,
+    "image": "https://lh3.googleusercontent.com/d/14QRWlka9g2ylZrFAOBVYtUcKOwRvlU-l",
+    "video": null,
+    "body": "Chẳng ai biết giữa hàng triệu cuộc gặp gỡ ngoài kia, ai là người mình sẽ đợi và ai là người sẽ đợi mình.\nCó những mối quan hệ chưa từng bắt đầu, nhưng lại khiến người ta tiếc nuối suốt rất nhiều năm.\nGiá như hôm ấy, giữa khoảng lặng dài hơn cả một lời từ chối, em đặt vào tay tôi một chút ngập ngừng, một chút do dự, một ánh mắt muốn giữ mà không dám giữ...\nCó lẽ tôi đã hiểu.\nHiểu rằng giữa cuộc đời rộng lớn này, chúng ta vẫn từng muốn ngồi cạnh nhau thêm một đoạn.\nĐáng tiếc là ngày ấy, cả em và tôi đều chọn im lặng.\nVà đôi khi, một đời người cũng chỉ lạc mất nhau vì một lần không nói.<br>\n<style>\n  .video-container {\n    width: 100%;\n    max-width: 600px;          /* Chiều rộng tối đa bạn muốn */\n    aspect-ratio: 16 / 9;     \n    background: #000;\n    margin: 0 auto;            /* Căn giữa nếu cần */\n  }\n  .video-container iframe {\n    width: 100%;\n    height: 100%;\n    border: 0;\n  }\n</style>\n\n<div class=\"video-container\">\n  <iframe src=\"https://drive.google.com/file/d/10jf_VnmLxzELEgjnwoPkii97kejU9Vlz/preview\" allowfullscreen></iframe>\n</div>"
   }
 ]
